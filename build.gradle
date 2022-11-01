@@ -18,7 +18,7 @@ plugins {
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "igneqas_library_system_android"
+    property "sonar.projectKey", "igneqas_code-for-analysis"
     property "sonar.organization", "ignas"
     property "sonar.host.url", "https://sonarcloud.io"
   }
