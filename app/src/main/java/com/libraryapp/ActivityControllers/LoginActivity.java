@@ -57,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             });
         } else {
-            System.out.println("BRUH1");
             Toast.makeText(this, "Login fields cannot be empty", Toast.LENGTH_SHORT).show();
         }
     }
