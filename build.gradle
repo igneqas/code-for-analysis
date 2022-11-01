@@ -12,18 +12,6 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
 plugins {
   id "org.sonarqube" version "3.5.0.2730"
 }
@@ -34,4 +22,16 @@ sonarqube {
     property "sonar.organization", "ignas"
     property "sonar.host.url", "https://sonarcloud.io"
   }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
