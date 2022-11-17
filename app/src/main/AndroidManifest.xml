@@ -14,12 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LibraryApp">
         <activity
-            android:name=".ActivityControllers.SignUpActivity"/>
-        <activity android:name=".ActivityControllers.ConfirmationActivity"></activity>
-        <activity android:name=".ActivityControllers.UserActivity"></activity>
-        <activity android:name=".ActivityControllers.MainActivity"></activity>
-        <activity
-            android:name=".ActivityControllers.LoginActivity"
+            android:name=".ActivityControllers.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
