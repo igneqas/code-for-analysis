@@ -9,6 +9,7 @@ import java.net.URL;
 
 
 public class RESTController {
+
     public static final String IOERROR = "Error when sending request";
     public static final String RESPONSE_ERROR = "Error response";
 
