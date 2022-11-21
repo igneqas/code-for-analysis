@@ -40,7 +40,6 @@ public class RESTController {
             Log.e("URL", "Error when forming URL");
             return "";
         }
-
     }
 
     private static String sendGenericRequest(URL requestUrl, String requestType) {
