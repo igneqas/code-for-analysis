@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         availableBooks.sort(Comparator.comparing(Books::getId));
                         populateBooksList(confirmReservationButton, availableBooks);
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("JSONException", e.getMessage());
                     }
 
                 }
