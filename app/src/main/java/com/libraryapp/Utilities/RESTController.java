@@ -1,87 +1,72 @@
 package com.libraryapp.Utilities;
+import android.util.Log;
+
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+
 public class RESTController {
+    public static final String IOERROR = "Error when sending request";
+    public static final String RESPONSE_ERROR = "Error response";
 
-    private static OutputStream outputStream;
-    private static BufferedWriter bufferedWriter;
-
-    public static String sendGet(String urlGet) throws IOException {
-        URL url = new URL(urlGet);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestMethod("GET");
-        httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        //setConnectionParameters(httpURLConnection, "GET");
-        int code = httpURLConnection.getResponseCode();
-        System.out.println("Response code: " + code);
-        if (code == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-                //break;
-            }
-            in.close();
-            return response.toString();
-        } else return "Error";
-    }
-
-    public static String sendGet(String urlGet, String id) throws IOException {
-        URL url = new URL(urlGet + id);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestMethod("GET");
-        httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        //setConnectionParameters(httpURLConnection, "GET");
-        int code = httpURLConnection.getResponseCode();
-        System.out.println("Response code: " + code);
-        if (code == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-            }
-            in.close();
-            return response.toString();
-        } else return "Error";
-    }
-
-
-
-
-public static String sendPost(String urlPost, String postDataParams) throws IOException {
-        URL url = new URL(urlPost + postDataParams);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        System.out.println(url);
-        setConnectionParameters(httpURLConnection, "POST");
-        /*outputStream = httpURLConnection.getOutputStream();
-        bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-        bufferedWriter.write(postDataParams); //? bufferedWriter.flush();
-        bufferedWriter.close();
-        outputStream.close();*/
-
-        int code = httpURLConnection.getResponseCode();
-        System.out.println("Response code: " + code);
-        if (code == HttpURLConnection.HTTP_OK) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-        String line;
-        StringBuffer response = new StringBuffer();
-        while ((line = in.readLine()) != null) {
-            response.append(line);
-            break;
+    public static String sendGet(String url) {
+        try {
+            URL formattedUrl = new URL(url);
+            return sendGenericRequest(formattedUrl, "GET");
+        } catch (MalformedURLException e){
+            Log.e("URL", "Error when forming URL");
+            return "";
         }
-        in.close();
-        return response.toString();
-    } else return "Error";
     }
 
-    
+    public static String sendGet(String url, String id) throws IOException {
+        try {
+            URL formattedUrl = new URL(url + id);
+            return sendGenericRequest(formattedUrl, "GET");
+        } catch (MalformedURLException e){
+            Log.e("URL", "Error when forming URL");
+            return "";
+        }
+    }
 
-    private static void setConnectionParameters(HttpURLConnection httpURLConnection, String type) throws ProtocolException {
+    public static String sendPost(String url, String postDataParams) throws IOException {
+        try {
+            URL formattedUrl = new URL(url + postDataParams);
+            return sendGenericRequest(formattedUrl,"POST");
+        } catch (MalformedURLException e){
+            Log.e("URL", "Error when forming URL");
+            return "";
+        }
+
+    }
+
+    private static String sendGenericRequest(URL requestUrl, String requestType) {
+        try {
+            HttpURLConnection httpURLConnection = (HttpURLConnection) requestUrl.openConnection();
+            setHttpConnectionParameters(httpURLConnection, requestType);
+            int responseCode = httpURLConnection.getResponseCode();
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader inputReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = inputReader.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                inputReader.close();
+                return response.toString();
+            }
+            return RESPONSE_ERROR;
+        } catch (Exception e) {
+            return IOERROR;
+        }
+    }
+
+
+    private static void setHttpConnectionParameters(HttpURLConnection httpURLConnection, String type) throws ProtocolException {
         httpURLConnection.setRequestMethod(type);
         httpURLConnection.setReadTimeout(20000);
         httpURLConnection.setConnectTimeout(20000);
